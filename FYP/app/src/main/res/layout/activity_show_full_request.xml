@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Driver.ShowFullRequest">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Pick and Drop Location"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/pickupLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="29dp"
+
+                    android:layout_marginLeft="29dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/pickupLocation_tvC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="pickupLocation"
+
+                        android:inputType="textPostalAddress"
+                        android:maxLines="1"
+                        android:padding="5dip"
+                        android:scrollHorizontally="true"
+                        android:visibility="visible" />
+
+
+                </HorizontalScrollView>
+
+
+                <HorizontalScrollView
+                    android:id="@+id/deliveryLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="29dp"
+                    android:layout_marginLeft="29dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/deliveryLocation_tvC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:hint="dropoffLocation"
+                        android:inputType="textPostalAddress"
+                        android:maxLines="1"
+                        android:padding="5dip"
+                        android:scrollHorizontally="true"
+                        android:visibility="visible" />
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="Customer Info"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/customerNameC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="customerName"
+                    android:inputType="textPersonName"
+                    android:padding="5dip"
+                    />
+
+                <TextView
+                    android:id="@+id/customerCnicC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="customerCnic"
+                    android:inputType="text"
+
+                    android:padding="5dip"
+                    />
+
+                <TextView
+                    android:id="@+id/customerNumberC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="customerNumber"
+                    android:inputType="number"
+                    android:padding="5dip"
+                    />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="Receiver Info"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/rcvrNameC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="rcvrName"
+                    android:inputType="textPersonName"
+
+                    android:padding="5dip"
+                    />
+
+                <TextView
+                    android:id="@+id/rcvrCnicC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:padding="5dip"
+
+                    android:text="rcvrCnic" />
+
+                <TextView
+                    android:id="@+id/rcvrNumberC"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="rcvrNumber"
+                    android:inputType="number"
+
+                    android:padding="5dip"
+                    />
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/dateC"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+                    android:hint="Date"
+                    android:padding="5dip" />
+
+                <TextView
+                    android:id="@+id/timeC"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:hint="Time"
+                    android:padding="5dip" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+
+                <TextView
+                    android:id="@+id/payment"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="29dp"
+                    android:hint="Payment Method"
+                    android:padding="5dip" />
+
+
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/acceptRequest"
+            android:layout_width="180dp"
+            android:layout_marginLeft="29dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:onClick="orderVehicle"
+            android:text="Accept" />
+            <Button
+                android:id="@+id/rejectRequest"
+                android:layout_width="180dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="29dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:onClick="orderVehicle"
+                android:text="reject" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

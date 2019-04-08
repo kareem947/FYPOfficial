@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/progressing_Order"
+            android:icon="@drawable/progressing"
+            android:title="Progressing_Orders"/>
+        <item
+            android:id="@+id/new_Order"
+            android:icon="@drawable/add_order"
+            android:title="New_Order"/>
+        <item
+            android:id="@+id/completed_Orders"
+            android:icon="@drawable/completed"
+            android:title="Completed Orders"/>
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/setting"
+            android:title="Setting"/>
+        <item
+            android:id="@+id/logOut"
+            android:icon="@drawable/logout"
+            android:title="LogOut"/>
+    </group><!--
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+-->
+</menu>
