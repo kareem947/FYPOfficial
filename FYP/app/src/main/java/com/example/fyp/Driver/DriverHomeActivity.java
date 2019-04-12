@@ -85,7 +85,7 @@ public class DriverHomeActivity extends AppCompatActivity
 
         } else if (id == R.id.progressing_Order) {
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.driver_container,new MapsActivity()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.driver_container,new DriverAllProgressingOrders()).commit();
 
         } else if (id == R.id.completed_Orders) {
 

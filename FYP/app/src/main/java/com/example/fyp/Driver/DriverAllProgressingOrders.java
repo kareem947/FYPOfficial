@@ -1,5 +1,4 @@
-package com.example.fyp.Customer;
-
+package com.example.fyp.Driver;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.fyp.Customer.CustomerAcceptedOrderModel;
+import com.example.fyp.Customer.CustomerAcceptedOrderAdapter;
 import com.example.fyp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,11 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+public class DriverAllProgressingOrders extends Fragment {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class customerAcceptedOrders extends Fragment {
 
     private RecyclerView recyclerView;
     String uid;
@@ -36,25 +32,22 @@ public class customerAcceptedOrders extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_customer_accepted_orders, container, false);
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        View view = inflater.inflate(R.layout.fragment_driver_all_progressing_orders, container, false);
 
-        recyclerView=view.findViewById(R.id.customerAcceptedOrderRecyclerView);
+        recyclerView=view.findViewById(R.id.driverProgressingOrdersRecyclerView);
         final FragmentActivity c = getActivity();
-
         LinearLayoutManager ll=new LinearLayoutManager(c);
         ll.setOrientation(LinearLayout.VERTICAL);
         recyclerView.setLayoutManager(ll);
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Log.d("nothing","aiwen");
 
+        final ArrayList<DriverAllProgressingOrdersModel> list = new ArrayList<>();
 
-        final ArrayList<CustomerAcceptedOrderModel> list = new ArrayList<>();
-
-        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(uid).child("MyDrivers");
+        final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid).child("working");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 if (isAdded()){
                 if (dataSnapshot.exists()) {
                     for (final DataSnapshot data : dataSnapshot.getChildren()) {
@@ -66,20 +59,28 @@ public class customerAcceptedOrders extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot datasnap) {
                                 if (datasnap.exists()) {
 
-                                    String dname = datasnap.child("driverName").getValue(String.class);
-                                    String dImage = datasnap.child("driverImage").getValue(String.class);
-                                    String dMobile = datasnap.child("driverMobile").getValue(String.class);
-                                    String driverId = datasnap.child("driverId").getValue(String.class);
-                                    String orderName = datasnap.child("orderId").getValue(String.class);
-                                    Log.d("MyCheck", requestId + "     " + driverId);
-                                    list.add(new CustomerAcceptedOrderModel(dname, dImage, dMobile, requestId, driverId, orderName));
-                                    CustomerAcceptedOrderAdapter adapter = new CustomerAcceptedOrderAdapter(getActivity(), list);
+                                    String cname = datasnap.child("customerName").getValue(String.class);
+                                    String cImage = datasnap.child("customerImage").getValue(String.class);
+                                    String cMobile = datasnap.child("customerNumber").getValue(String.class);
+                                    String pickup = datasnap.child("pickup").getValue(String.class);
+                                    String dropoff = datasnap.child("delivery").getValue(String.class);
+                                    String customerId = datasnap.child("customerId").getValue(String.class);
+                                    Log.d("everyThing", cname + "     " + cImage + "     " + cMobile + "     " + pickup + "     " + dropoff);
+                                    list.add(new DriverAllProgressingOrdersModel(cname, cImage, cMobile, requestId, customerId, pickup, dropoff));
+                                    DriverAllProgressingOrdersAdapter adapter = new DriverAllProgressingOrdersAdapter(getActivity(), list);
                                     recyclerView.setAdapter(adapter);
+
                                 }
-                                else{
-                                    databaseReference.child(data.getKey()).removeValue();
+                                else {
+                                        databaseReference.child(data.getKey()).removeValue();
                                 }
+
+/*
+                                recyclerView.setHasFixedSize(true);
+*/
                             }
+
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -97,6 +98,9 @@ public class customerAcceptedOrders extends Fragment {
 
             }
         });
+
+
+
 
 
         return view;

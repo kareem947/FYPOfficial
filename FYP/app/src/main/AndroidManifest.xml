@@ -21,6 +21,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBvR07aFM-1ddGVgt392lRnUge3weT6nUY" />
+
+
+       <!-- <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAGYXrHC3XCFNFngLPzPRIx4mBuEJdDF9Q" />-->
+
+
         <activity android:name=".Company.ShowDriverDetails"></activity>
         <activity
             android:name=".Company.CompanyMainPage"
@@ -55,22 +66,15 @@
         <activity android:name=".Driver.DriverRequests.DriverRequests" />
 -->
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBvR07aFM-1ddGVgt392lRnUge3weT6nUY" />
-        <!--
   <activity
-            android:name=".CustomerMaps"
+            android:name=".Customer.CustomerMaps"
             android:label="@string/title_activity_customer_maps">
 
         </activity>
-        -->
         <activity android:name=".Customer.AddItem.AddItem" />
-<!--
         <activity
             android:name=".Driver.MapsActivity"
             android:label="@string/title_activity_maps" />
--->
 <!--
         <activity android:name=".Customer.MakeOrder" />
 -->

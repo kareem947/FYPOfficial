@@ -27,14 +27,14 @@ import java.util.HashMap;
 
 public class ConfirmOrder extends AppCompatActivity {
 
-    String cName, cCnic, cNumber, rName, rCnic, rNumber, pickup, delivery, uid, paymentMethod,cusImage;
+    String cName, cCnic, cNumber,ordername, rName, rCnic, rNumber, pickup, delivery, uid, paymentMethod,cusImage;
     int mYear, mMonth, mDay, mHour, mMinute;
     Button order_Vehicle;
     double pickupLat, pickUpLon, dropOffLat, dropOffLon;
     boolean driverfound = false;
     int count = 0;
     ArrayList<String> ids;
-    private TextView price,payment, customerName,vehicle, customerCnic, customerNumber, rcvrName, rcvrCnic, rcvrNumber, pickupLoc, deliveryLoc, date, time;
+    private TextView price,payment, orderName,customerName,vehicle, customerCnic, customerNumber, rcvrName, rcvrCnic, rcvrNumber, pickupLoc, deliveryLoc, date, time;
     private String requestId;
     private int radius = 2;
     private String driverFoundId;
@@ -54,6 +54,7 @@ public class ConfirmOrder extends AppCompatActivity {
         customerNumber = findViewById(R.id.customerNumberC);
         price = findViewById(R.id.estimatedprice);
         rcvrName = findViewById(R.id.rcvrNameC);
+        orderName = findViewById(R.id.orderName);
         rcvrCnic = findViewById(R.id.rcvrCnicC);
         vehicle=findViewById(R.id.truckordred);
         rcvrNumber = findViewById(R.id.rcvrNumberC);
@@ -70,6 +71,7 @@ public class ConfirmOrder extends AppCompatActivity {
         cNumber = getIntent().getStringExtra("cNumber");
         rName = getIntent().getStringExtra("rName");
         rCnic = getIntent().getStringExtra("rCnic");
+        ordername=getIntent().getStringExtra("orderName");
         rNumber = getIntent().getStringExtra("rNumber");
         truckType=getIntent().getStringExtra("truckType");
         paymentMethod=getIntent().getStringExtra("paymentMethod");
@@ -104,6 +106,7 @@ public class ConfirmOrder extends AppCompatActivity {
         customerCnic.setText("Cnic: "+cCnic);
         customerNumber.setText("Mobile: "+cNumber);
         rcvrCnic.setText("Cnic: "+rCnic);
+        orderName.setText("Oders  :" +ordername);
         rcvrName.setText("Name: "+rName);
         rcvrNumber.setText("mobile: "+rNumber);
         pickupLoc.setText("Pickup: "+pickup);
@@ -128,7 +131,8 @@ public class ConfirmOrder extends AppCompatActivity {
     public void orderVehicle(View view) {
         getClosestLocation();
 
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();/*
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        /*
         DatabaseReference checkIfnotWorking = FirebaseDatabase.getInstance().getReference().child("WorkingRequests").child(userId);
         checkIfnotWorking.addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,7 +150,8 @@ public class ConfirmOrder extends AppCompatActivity {
                     requests.put("pickup", pickup);
                     requests.put("delivery", delivery);
                     requests.put("customerImage",cusImage);
-                    //requests.put("id", userId);
+                    requests.put("orderId",ordername);
+                    requests.put("customerId", userId);
                     requests.put("paymentMethod",paymentMethod);
                     requests.put("fair",Integer.toString(estimatedFair));
 

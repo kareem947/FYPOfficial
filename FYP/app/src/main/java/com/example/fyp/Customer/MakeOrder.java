@@ -50,7 +50,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
     String deliveryAddress;
     Button track;
     RecyclerView recyclerView;
-    EditText customerName, customerCnic, customerNumber, rcvrName, rcvrCnic, rcvrNumber;
+    EditText customerName, customerCnic, customerNumber, rcvrName, rcvrCnic, rcvrNumber,orderName;
 
     double pickupLat, pickUpLon, dropOffLat, dropOffLon;
 
@@ -87,6 +87,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
         customerName = view.findViewById(R.id.customerName);
         customerCnic = view.findViewById(R.id.customerCnic);
         customerNumber = view.findViewById(R.id.customerNumber);
+        orderName = view.findViewById(R.id.orderName);
         recyclerView = view.findViewById(R.id.itemRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         pickUpBtn=view.findViewById(R.id.pickup_btn);
@@ -175,9 +176,10 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
         bookOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cName, cCnic, cNumber, rName, rCnic, rNumber;
+                String cName, cCnic, cNumber, rName, rCnic, rNumber,ordername;
                 cName = customerName.getText().toString();
                 cCnic = customerCnic.getText().toString();
+                ordername=orderName.getText().toString();
                 cNumber = customerNumber.getText().toString();
 
                 rName = rcvrName.getText().toString();
@@ -195,7 +197,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
                 else if (online.isChecked())
                     paymnetMethod=20;
 
-                if (cName.equals("") || cCnic.equals("") || cNumber.equals("") || rName.equals("") || rCnic.equals("") || rNumber.equals("") || pickupAddress.equals("") || deliveryAddress.equals("") || truckType==0 || paymnetMethod == 0) {
+                if (cName.equals("")||ordername.equals("") || cCnic.equals("") || cNumber.equals("") || rName.equals("") || rCnic.equals("") || rNumber.equals("") || pickupAddress.equals("") || deliveryAddress.equals("") || truckType==0 || paymnetMethod == 0) {
                     Toast.makeText(getActivity(), "Complete all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getActivity(), ConfirmOrder.class);
@@ -203,6 +205,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
                     intent.putExtra("cCnic", cCnic);
                     intent.putExtra("cNumber", cNumber);
                     intent.putExtra("rName", rName);
+                    intent.putExtra("orderName",ordername);
                     intent.putExtra("rCnic", rCnic);
                     intent.putExtra("truckType",Integer.toString(truckType));
                     intent.putExtra("paymentMethod", Integer.toString(paymnetMethod));

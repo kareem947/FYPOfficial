@@ -12,6 +12,7 @@ import com.example.fyp.R;
 public class CompanyLogIn extends AppCompatActivity {
 
     Button companyLogIn;
+Button xyz;
     EditText companyEmail, companyPassword;
 
     @Override

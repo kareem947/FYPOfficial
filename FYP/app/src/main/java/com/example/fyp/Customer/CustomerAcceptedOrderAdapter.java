@@ -1,16 +1,24 @@
 package com.example.fyp.Customer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fyp.Driver.DriverRequests.requestadapter;
 import com.example.fyp.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,6 +31,7 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
     private LayoutInflater mlayoutinflater;
     Context context;
     private requestadapter.ItemClickListener mylistener;
+    String requestId,driverId;
     int x;
 
     public CustomerAcceptedOrderAdapter(Context context,ArrayList<CustomerAcceptedOrderModel> data){
@@ -44,6 +53,9 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
         viewHolder.name.setText(data.get(i).getDriverName());
         viewHolder.mobile.setText(data.get(i).getDriverMobile());
 
+        requestId= data.get(i).getRequestId();
+        driverId=data.get(i).getDriverId();
+
         String image=data.get(i).getImageView();
         if (!image.equals("default")) {
             Picasso.get().load(image).into(viewHolder.imageView);
@@ -63,22 +75,50 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
 
         TextView name;
         TextView mobile;
+        TextView orderName;
         CircleImageView imageView;
+        Button cancel;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.driverName);
             mobile=itemView.findViewById(R.id.driverMobile);
             imageView=itemView.findViewById(R.id.driverpic);
+            orderName=itemView.findViewById(R.id.orderName);
+            cancel=itemView.findViewById(R.id.cancelOrder);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatabaseReference cancelOrder=FirebaseDatabase.getInstance().getReference("WorkingRequests").child(requestId);
+                    cancelOrder.removeValue();
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "EveryThing is Good", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(context, "Goooood", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(context, CustomerMaps.class);
+                    intent.putExtra("requestId",requestId);
+                    intent.putExtra("driverId",driverId);
+                    context.startActivity(intent);
+
+
+                    /*
+
+                    Intent intent=new Intent(context, CustomerMaps.class);
+                   */
+/* intent.putExtra("requestId",requestId);
+                    intent.putExtra("driverId",driverId);*//*
+
+                    context.startActivity(intent);
+*/
+
+
                 }
             });
-
-
         }
 
 

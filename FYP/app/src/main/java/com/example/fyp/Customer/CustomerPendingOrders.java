@@ -58,7 +58,9 @@ public class CustomerPendingOrders extends Fragment {
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                         String name = dataSnapshot1.child("customerName").getValue(String.class);
                         String number = dataSnapshot1.child("customerNumber").getValue(String.class);
-                        list.add(new CustomerPendingOrderModel(name,number));
+                        String orderName= dataSnapshot1.child("orderId").getValue(String.class);
+                        String requestId=dataSnapshot1.getKey();
+                        list.add(new CustomerPendingOrderModel(name,number,orderName,uid,requestId));
 
                     }
                     CustomerPendingOrderAdapter adapter = new CustomerPendingOrderAdapter(getActivity(), list);

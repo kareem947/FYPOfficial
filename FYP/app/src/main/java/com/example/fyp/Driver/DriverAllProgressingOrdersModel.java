@@ -1,32 +1,45 @@
-package com.example.fyp.Customer;
+package com.example.fyp.Driver;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+public class DriverAllProgressingOrdersModel {
 
-public class CustomerAcceptedOrderModel {
 
     private String driverName;
+    private String customerId;
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
     private String imageView;
     private String driverMobile;
     private String requestId;
-    private String driverId;
 
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
+    public void setPickup(String pickup) {
+        this.pickup = pickup;
     }
 
-    public String getOrderName() {
-        return orderName;
+    public void setDropoff(String dropoff) {
+        this.dropoff = dropoff;
     }
 
-    private String orderName;
-
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public String getDropoff() {
+        return dropoff;
     }
 
-    public String getDriverId() {
-        return driverId;
+    public String getPickup() {
+        return pickup;
     }
+
+    private String pickup;
+    private String dropoff;
+
+
+
+
 
     public void setDriverName(String driverName) {
         this.driverName = driverName;
@@ -60,12 +73,14 @@ public class CustomerAcceptedOrderModel {
         return requestId;
     }
 
-    public CustomerAcceptedOrderModel(String driverName, String  imageView, String driverMobile, String requestId,String driverId,String orderName) {
+    public DriverAllProgressingOrdersModel(String driverName, String  imageView, String driverMobile, String requestId,String CustomerId,String pickup,String dropoff) {
         this.driverName = driverName;
         this.imageView = imageView;
         this.driverMobile = driverMobile;
         this.requestId=requestId;
-        this.driverId=driverId;
-        this.orderName=orderName;
+        this.pickup=pickup;
+        this.dropoff=dropoff;
+        this.customerId=CustomerId;
     }
+
 }

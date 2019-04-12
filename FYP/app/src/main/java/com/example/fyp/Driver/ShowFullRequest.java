@@ -3,6 +3,8 @@ package com.example.fyp.Driver;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +61,7 @@ public class ShowFullRequest extends AppCompatActivity {
 
         mcurrentuser= FirebaseAuth.getInstance().getCurrentUser();
         uid= mcurrentuser.getUid();
+
         final String id=getIntent().getStringExtra("customerId");
         final String requestid=getIntent().getStringExtra("requestId");
 
@@ -122,9 +125,9 @@ public class ShowFullRequest extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DatabaseReference requestsid=FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid);
                 final DatabaseReference fromPath=FirebaseDatabase.getInstance().getReference().child("Requests").child(id).child(requestid);
                 final DatabaseReference toPath=FirebaseDatabase.getInstance().getReference().child("WorkingRequests").child(requestid);
+                final DatabaseReference requestsid=FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid);
                 fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -137,8 +140,6 @@ public class ShowFullRequest extends AppCompatActivity {
                         toPath.child("driverLicense").setValue(dLicense);
                         toPath.child("driverTruckType").setValue(dTrucktype);
                         fromPath.removeValue();
-                        requestsid.child("customerIds").child(requestid).removeValue();
-                        requestsid.child("working").child(requestid).setValue(true);
 
 
                     }
@@ -148,7 +149,11 @@ public class ShowFullRequest extends AppCompatActivity {
                 });
                 DatabaseReference myDriver=FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(id).child("MyDrivers");
                 myDriver.child(requestid).setValue(true);
-              /*  Intent intent=new Intent(ShowFullRequest.this,MapsActivity.class);
+
+                requestsid.child("customerIds").child(requestid).removeValue();
+                requestsid.child("working").child(requestid).setValue(true);
+
+             /*   Intent intent=new Intent(ShowFullRequest.this,DriverHomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);*/
             }
@@ -164,7 +169,6 @@ public class ShowFullRequest extends AppCompatActivity {
             public void onClick(View v) {
                 final DatabaseReference deletedataFromDriver=FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid).child("customerIds").child(requestid);
                 deletedataFromDriver.removeValue();
-
             }
         });
 
