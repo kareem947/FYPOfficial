@@ -23,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class ConfirmOrder extends AppCompatActivity {
@@ -223,7 +226,7 @@ public class ConfirmOrder extends AppCompatActivity {
             @Override
             public void onGeoQueryReady() {
                 if (radius < 20){
-                if (count < 5) {
+                if (count < 15) {
                     radius++;
                     count = 0;
                     getClosestLocation();
@@ -246,7 +249,47 @@ public class ConfirmOrder extends AppCompatActivity {
         });
     }
 
+    ArrayList<RatingSort> newList= new ArrayList<>();
     public void sendRequest() {
+        for (int i = 0; i<ids.size() ; i++){
+
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(ids.get(i));
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    newList.add(new RatingSort(dataSnapshot.getKey(),Math.round(dataSnapshot.child("rating").getValue(Float.class))));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+       }
+       sendRequest1();
+        DatabaseReference driverReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
+
+        for (int i = 0; i<5 ; i++){
+            driverReference.child(ids.get(i)).child("customerIds").child(requestId).child("requestId").setValue(uid);
+        }
+    }
+
+
+
+
+    public void sendRequest1() {
+        Collections.sort(newList, new Comparator<RatingSort>() {
+            @Override
+            public int compare(RatingSort o1, RatingSort o2) {
+                return Integer.valueOf(o1.rating).compareTo(o2.rating);
+            }
+
+        });
+
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
         for (int i = 0; i < ids.size(); i++) {
             Log.d("customerKiID", uid);
@@ -254,6 +297,5 @@ public class ConfirmOrder extends AppCompatActivity {
 
         }
     }
-
 
 }

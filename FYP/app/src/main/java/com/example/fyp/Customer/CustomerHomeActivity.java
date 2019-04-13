@@ -79,6 +79,7 @@ public class CustomerHomeActivity extends AppCompatActivity
         if (id == R.id.new_Order) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new MakeOrder()).commit();
         } else if (id == R.id.completed_Orders) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,new CustomerCompletedOrders()).commit();
 
 
         } else if (id == R.id.progressing_Order) {

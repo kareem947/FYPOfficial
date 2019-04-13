@@ -559,7 +559,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-/*
     private void makeroute(LatLng driver, LatLng place) {
 
         new com.example.fyp.directionhelpers.FetchURL(this).execute(getUrl(driver, place, "driving"), "driving");
@@ -587,5 +586,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (currentPolyline != null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-    }*/
+    }
 }

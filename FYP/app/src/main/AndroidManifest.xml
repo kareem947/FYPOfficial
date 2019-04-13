@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,18 +20,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Customer.ShowCustomerCompletedOrder"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBvR07aFM-1ddGVgt392lRnUge3weT6nUY" />
-
-
-       <!-- <meta-data
+        <!--
+ <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAGYXrHC3XCFNFngLPzPRIx4mBuEJdDF9Q" />-->
-
-
-        <activity android:name=".Company.ShowDriverDetails"></activity>
+            android:value="AIzaSyAGYXrHC3XCFNFngLPzPRIx4mBuEJdDF9Q" />
+        -->
+        <activity android:name=".Company.ShowDriverDetails" />
         <activity
             android:name=".Company.CompanyMainPage"
             android:label="@string/title_activity_company_main_page"
@@ -46,38 +44,27 @@
             android:name=".Customer.CustomerHomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-<!--
-        <activity android:name=".Driver.ShowDriverProfile" />
--->
+        <!--         <activity android:name=".Driver.ShowDriverProfile" /> -->
         <activity android:name=".Driver.Setting" />
-        <activity android:name=".Customer.ConfirmOrder">
-
-        </activity>
+        <activity android:name=".Customer.ConfirmOrder"></activity>
         <activity android:name=".Driver.ShowFullRequest" />
         <activity android:name=".Customer.CustomerRegister" />
         <activity android:name=".SignIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Driver.DriverRegister" />
-<!--
-        <activity android:name=".Driver.DriverRequests.DriverRequests" />
--->
-
-  <activity
+        <!--         <activity android:name=".Driver.DriverRequests.DriverRequests" /> -->
+        <activity
             android:name=".Customer.CustomerMaps"
-            android:label="@string/title_activity_customer_maps">
-
-        </activity>
+            android:label="@string/title_activity_customer_maps"></activity>
         <activity android:name=".Customer.AddItem.AddItem" />
         <activity
             android:name=".Driver.MapsActivity"
             android:label="@string/title_activity_maps" />
-<!--
-        <activity android:name=".Customer.MakeOrder" />
--->
     </application>
 
 </manifest>
