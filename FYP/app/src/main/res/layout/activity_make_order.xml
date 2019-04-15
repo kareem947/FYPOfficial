@@ -340,7 +340,7 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
+         <!--   <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -361,7 +361,7 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="20dp"
                     android:text="set_Date" />
-            </LinearLayout>
+            </LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -3,11 +3,11 @@
  <!--   <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>-->
-    <color name="colorPrimary">#22BD0E</color>
-    <color name="colorPrimaryDark">#1b910c</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="backgroudColor">#22bd0e</color>
-    <color name="textColor">#ffffff</color>
-    <color name="buttonColor">#1b910c</color>
+    <color name="colorPrimary">#235486</color>
+    <color name="colorPrimaryDark">#4267B2</color>
+    <color name="colorAccent">#0E0105</color>
+    <color name="backgroudColor">#FBFBFD</color>
+    <color name="textColor">#000003</color>
+    <color name="buttonColor">#235486</color>
     <color name="optionColor">#1b910c</color>
 </resources>

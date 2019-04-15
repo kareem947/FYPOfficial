@@ -89,21 +89,16 @@ public class ConfirmOrder extends AppCompatActivity {
         pickUpLon = getIntent().getDoubleExtra("pickuplon", 0.0);
         dropOffLat = getIntent().getDoubleExtra("dropofflat", 0.0);
         dropOffLon = getIntent().getDoubleExtra("dropofflon", 0.0);
-
         Location pickupLocation=new Location("");
         Location dropOffLocation=new Location("");
         pickupLocation.setLatitude(pickupLat);
         pickupLocation.setLongitude(pickUpLon);
         dropOffLocation.setLatitude(dropOffLat);
         dropOffLocation.setLongitude(dropOffLon);
-
         double distance= pickupLocation.distanceTo(dropOffLocation)/1000;
         estimatedFair = (int) (distance*100);
-
         completeFields();
-
     }
-
     public void completeFields() {
         customerName.setText("Name: "+cName);
         customerCnic.setText("Cnic: "+cCnic);
@@ -132,89 +127,90 @@ public class ConfirmOrder extends AppCompatActivity {
     }
 
     public void orderVehicle(View view) {
+
+
         getClosestLocation();
 
-        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        /*
-        DatabaseReference checkIfnotWorking = FirebaseDatabase.getInstance().getReference().child("WorkingRequests").child(userId);
-        checkIfnotWorking.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-*/
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Requests").child(userId);
-                    HashMap<String, String> requests = new HashMap<>();
-                    requests.put("customerName", cName);
-                    requests.put("customerCnic", cCnic);
-                    requests.put("customerNumber", cNumber);
-                    requests.put("rcvrName", rName);
-                    requests.put("rcvrCnic", rCnic);
-                    requests.put("rcvrNumber", rNumber);
-                    requests.put("pickup", pickup);
-                    requests.put("delivery", delivery);
-                    requests.put("customerImage",cusImage);
-                    requests.put("orderId",ordername);
-                    requests.put("customerId", userId);
-                    requests.put("paymentMethod",paymentMethod);
-                    requests.put("fair",Integer.toString(estimatedFair));
+                final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Requests").child(userId);
+                HashMap<String, String> requests = new HashMap<>();
+                requests.put("customerName", cName);
+                requests.put("customerCnic", cCnic);
+                requests.put("customerNumber", cNumber);
+                requests.put("rcvrName", rName);
+                requests.put("rcvrCnic", rCnic);
+                requests.put("rcvrNumber", rNumber);
+                requests.put("pickup", pickup);
+                requests.put("delivery", delivery);
+                requests.put("customerImage", cusImage);
+                requests.put("orderId", ordername);
+                requests.put("customerId", userId);
+                requests.put("paymentMethod", paymentMethod);
+                requests.put("fair", Integer.toString(estimatedFair));
 
-                    requestId=databaseReference.push().getKey();
-                    databaseReference=databaseReference.child(requestId);
+                requestId = databaseReference.push().getKey();
+                databaseReference = databaseReference.child(requestId);
 
-                    databaseReference.setValue(requests);
-                    GeoFire geoFire = new GeoFire(databaseReference);
-                    geoFire.setLocation("pickuplocation", new GeoLocation(pickupLat, pickUpLon), new GeoFire.CompletionListener() {
-
-                        @Override
-                        public void onComplete(String key, DatabaseError error) {
-                            if (error != null) {
-                                System.err.println("There was an error saving the location to GeoFire: " + error);
-                            } else {
-                                System.out.println("Location saved on server successfully!");
-                            }
+                databaseReference.setValue(requests);
+                GeoFire geoFire = new GeoFire(databaseReference);
+                geoFire.setLocation("pickuplocation", new GeoLocation(pickupLat, pickUpLon), new GeoFire.CompletionListener() {
+                    @Override
+                    public void onComplete(String key, DatabaseError error) {
+                        if (error != null) {
+                            System.err.println("There was an error saving the location to GeoFire: " + error);
+                        } else {
+                            System.out.println("Location saved on server successfully!");
                         }
-
-                    });
-                    geoFire.setLocation("dropofflocation", new GeoLocation(dropOffLat, dropOffLon), new GeoFire.CompletionListener() {
-
-                        @Override
-                        public void onComplete(String key, DatabaseError error) {
-                            if (error != null) {
-                                System.err.println("There was an error saving the location to GeoFire: " + error);
-                            } else {
-                                System.out.println("Location saved on server successfully!");
-                            }
+                    }
+                });
+                geoFire.setLocation("dropofflocation", new GeoLocation(dropOffLat, dropOffLon), new GeoFire.CompletionListener() {
+                    @Override
+                    public void onComplete(String key, DatabaseError error) {
+                        if (error != null) {
+                            System.err.println("There was an error saving the location to GeoFire: " + error);
+                        } else {
+                            System.out.println("Location saved on server successfully!");
                         }
-
-                    });
-           /*     }
+                    }
+                });
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-
-
-    }
 
     public void getClosestLocation() {
         DatabaseReference driverlocation = FirebaseDatabase.getInstance().getReference().child("DriversAvailable").child(truckType);
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
+
+
         GeoFire geoFire = new GeoFire(driverlocation);
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupLat, pickUpLon), radius);
         geoQuery.removeAllListeners();
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                if (count < 5) {
+            public void onKeyEntered(final String key, GeoLocation location) {
+
+
+                if (count < 15) {
+
                     driverFoundId = key;
-                    ids.add(driverFoundId);
-                    //    Log.d("Id"+count +"      radius   "+radius+"   "+ids.get(count),""+driverFoundId);
-                    count++;
-                    driverfound = true;
-                    // getDriverLocation();
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                if (dataSnapshot.child(key).child("suspended").getValue(String.class).equals("no")){
+                                    ids.add(driverFoundId);
+                                    Log.d("Id123",""+driverFoundId);
+                                    count++;
+                                    driverfound = true;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             }
             @Override
@@ -229,13 +225,16 @@ public class ConfirmOrder extends AppCompatActivity {
                 if (count < 15) {
                     radius++;
                     count = 0;
+                    driverfound=false;
                     getClosestLocation();
 
                 }
                 }
             else {
                 if (count>0){
-                    sendRequest();
+                    if (ids.size()>0) {
+                        sendRequest();
+                    }
                 }
                 else
                     Toast.makeText(ConfirmOrder.this, "We Have No Driver In Your Area", Toast.LENGTH_SHORT).show();
@@ -272,7 +271,7 @@ public class ConfirmOrder extends AppCompatActivity {
        sendRequest1();
         DatabaseReference driverReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
 
-        for (int i = 0; i<5 ; i++){
+        for (int i = 0; i<ids.size()/2 ; i++){
             driverReference.child(ids.get(i)).child("customerIds").child(requestId).child("requestId").setValue(uid);
         }
     }
@@ -293,7 +292,11 @@ public class ConfirmOrder extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
         for (int i = 0; i < ids.size(); i++) {
             Log.d("customerKiID", uid);
+            Log.d("customerKiID", ids.get(i));
+
+
             databaseReference.child(ids.get(i)).child("customerIds").child(requestId).child("requestId").setValue(uid);
+
 
         }
     }

@@ -54,12 +54,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,TaskLoadedCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,com.google.android.gms.location.LocationListener {
     private GoogleMap mMap;
@@ -85,12 +89,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Boolean working = false;
     String vehicleType;
     Button pickedUp,droppedOff;
+    int fair;
 
 
-    /*
-    private List<Polyline> polylines;
+    private TextView nameText, phoneText, cnicText,pick,drop;
+    CircleImageView imageView;
+    private StorageReference mStorageReference;
+    TextView makeCall;
 
-    private static final int[] COLORS = new int[]{R.color.primary_dark_material_light};*/
 
 
 
@@ -100,17 +106,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-       /* SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
-
-
-
-        /*polylines = new ArrayList<>();*/
 
         requestId=getIntent().getStringExtra("requestId");
         customerId=getIntent().getStringExtra("customerId");
+
+
 
         myfab=findViewById(R.id.makeRoute);
         pickedUp=findViewById(R.id.picked_up);
@@ -118,6 +118,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         cardView=findViewById(R.id.cardView);
         showDistanePick=findViewById(R.id.distanceRemaing);
         showDistaneDrop=findViewById(R.id.distanceRemaingd);
+
+
+        nameText = findViewById(R.id.CProfileName);
+        phoneText =findViewById(R.id.CProfilePhone);
+        cnicText =  findViewById(R.id.CProfileCnic);
+        imageView =  findViewById(R.id.showCustomerprofile_image);
+        pick = findViewById(R.id.pickupLocationtxt);
+        drop = findViewById(R.id.dropoffLocationtxt);
+
+        makeCall=findViewById(R.id.makeCall);
+
+        setCustomerProfile();
+
 
         myfab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,17 +162,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (dataSnapshot.exists()) {
                         vehicleType=dataSnapshot.child("truckType").getValue(String.class);
                         Log.d("vehicle",dataSnapshot.child("truckType").getValue(String.class));
-/*
-                    if (dataSnapshot.child("working").getChildren()!=null){
-*/
-/*
-                        requestId=dataSnapshot.child("working").getValue(String.class);
-*/
-
-/*
-                    Log.d("workingValue",dataSnapshot.child("working").getValue(String.class));
-*/
-
 
                     DatabaseReference customerId = FirebaseDatabase.getInstance().getReference().child("WorkingRequests").child(requestId);
                     customerId.addValueEventListener(new ValueEventListener() {
@@ -167,6 +169,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                             if (dataSnapshot.exists()) {
+                                pick.setText(dataSnapshot.child("pickup").getValue(String.class));
+                                drop.setText(dataSnapshot.child("delivery").getValue(String.class));
+                                fair= Integer.parseInt(dataSnapshot.child("fair").getValue(String.class));
                                 pickupLocation = new Location("");
                                 dropoffLocation = new Location("");
 
@@ -221,12 +226,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-      /*  SupportMapFragment mapFragment =
-                (SupportMapFragment)
-                        getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        return view;*/
+    }
 
+    private void setCustomerProfile() {
+
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(customerId);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nameText.setText(dataSnapshot.child("name").getValue(String.class));
+                phoneText.setText(dataSnapshot.child("mobile").getValue(String.class));
+                cnicText.setText(dataSnapshot.child("cnic").getValue(String.class));
+
+                String image = dataSnapshot.child("image").getValue().toString();
+
+                //String s = dataSnapshot.child("image").getValue(String.class);
+                if (!image.equals("default")) {
+                    Picasso.get().load(image).into(imageView);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void makeHistory() {
@@ -235,8 +258,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 final DatabaseReference completedRequests=FirebaseDatabase.getInstance().getReference().child("CompletedRequests").child(requestId);
                 final DatabaseReference customerCompleted= FirebaseDatabase.getInstance().getReference().child("CustomerCompleted").child(customerId);
                 final DatabaseReference driverCompleted= FirebaseDatabase.getInstance().getReference().child("DriverCompleted").child(Uid);
+                final DatabaseReference driver= FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(Uid);
 
-                workingRequests.addListenerForSingleValueEvent(new ValueEventListener() {
+        driver.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            int x = dataSnapshot.child("completedOrders").getValue(Integer.class);
+                            int y = dataSnapshot.child("fair").getValue(Integer.class);
+
+                            if (x>=1){
+                                driver.child("completedOrders").setValue(x+1);
+                                driver.child("fair").setValue(y+fair);
+                                driver.child("suspended").setValue("yes");
+                            }
+                            else {
+                                driver.child("completedOrders").setValue(x + 1);
+                                driver.child("fair").setValue(y + fair);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        workingRequests.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             completedRequests.setValue(dataSnapshot.getValue());
@@ -338,7 +387,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(100000);
+        mLocationRequest.setInterval(100);
        // mLocationRequest.setSmallestDisplacement();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -390,26 +439,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     vehicleType=dataSnapshot.child("truckType").getValue(String.class);
 
                     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference databaseReference1= FirebaseDatabase.getInstance().getReference("DriversAvailable").child(vehicleType);
-/*
-                    if (working) {
-*/
+
 
                         final GeoFire geoFire = new GeoFire(databaseReference.child("WorkingDrivers"));
-                        GeoFire geoFire1=new GeoFire(databaseReference1);
-
-                                geoFire1.setLocation(Uid, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
-
-                                    @Override
-                                    public void onComplete(String key, DatabaseError error) {
-                                        if (error != null) {
-                                            System.err.println("There was an error saving the location to GeoFire: " + error);
-                                        } else {
-                                            System.out.println("Location saved on server successfully!");
-                                        }
-                                    }
-
-                                });
 
 
                         geoFire.setLocation(Uid, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
@@ -426,48 +458,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         });
 
                         Log.d("ithy ta aya hy","working");
-
-
-
-                    //}
-             /*       else {
-                        GeoFire geoFire = new GeoFire(databaseReference.child("WorkingDrivers"));
-                        final GeoFire geoFire1=new GeoFire(databaseReference1);
-
-                        geoFire.removeLocation(userId, new GeoFire.CompletionListener() {
-                            @Override
-                            public void onComplete(String key, DatabaseError error) {
-                                geoFire1.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
-
-                                    @Override
-                                    public void onComplete(String key, DatabaseError error) {
-                                        if (error != null) {
-                                            System.err.println("There was an error saving the location to GeoFire: " + error);
-                                        } else {
-                                            System.out.println("Location saved on server successfully!");
-                                        }
-                                    }
-
-                                });
-                            }
-                        });
-                        geoFire1.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()), new GeoFire.CompletionListener() {
-
-                            @Override
-                            public void onComplete(String key, DatabaseError error) {
-                                if (error != null) {
-                                    System.err.println("There was an error saving the location to GeoFire: " + error);
-                                } else {
-                                    System.out.println("Location saved on server successfully!");
-                                }
-                            }
-
-                        });
-
-                        Log.d("ithy ta aya hy","not working");
-
-
-                    }*/
 
                 }
             }

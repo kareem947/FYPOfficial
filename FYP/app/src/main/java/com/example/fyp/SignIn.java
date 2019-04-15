@@ -126,10 +126,12 @@ public class SignIn extends AppCompatActivity {
 
                                         if (userType=="Drivers"){
                                             Intent intent= new Intent(SignIn.this, DriverHomeActivity.class );
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                         }
                                         else {
                                             Intent intent= new Intent(SignIn.this, CustomerHomeActivity.class );
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                         }
                                     }

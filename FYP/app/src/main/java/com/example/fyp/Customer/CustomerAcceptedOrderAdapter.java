@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.fyp.Driver.DriverRequests.requestadapter;
 import com.example.fyp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -48,7 +49,7 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
         return (new viewHolder(view));    }
 
     @Override
-    public void onBindViewHolder(@NonNull viewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final viewHolder viewHolder, int i) {
 
         viewHolder.name.setText(data.get(i).getDriverName());
         viewHolder.mobile.setText(data.get(i).getDriverMobile());
@@ -60,7 +61,16 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
         if (!image.equals("default")) {
             Picasso.get().load(image).into(viewHolder.imageView);
         }
-
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos=viewHolder.getAdapterPosition();
+                Intent intent=new Intent(context, CustomerMaps.class);
+                intent.putExtra("requestId",data.get(pos).getRequestId());
+                intent.putExtra("driverId",data.get(pos).getDriverId());
+                context.startActivity(intent);
+            }
+        });
 
 
     }
@@ -91,34 +101,17 @@ public class CustomerAcceptedOrderAdapter extends RecyclerView.Adapter<CustomerA
                 @Override
                 public void onClick(View v) {
                     DatabaseReference cancelOrder=FirebaseDatabase.getInstance().getReference("WorkingRequests").child(requestId);
-                    cancelOrder.removeValue();
+                    cancelOrder.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            notifyDataSetChanged();
+                        }
+                    });
                 }
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            itemView.setOnClickListener(this);
 
-                    Toast.makeText(context, "Goooood", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(context, CustomerMaps.class);
-                    intent.putExtra("requestId",requestId);
-                    intent.putExtra("driverId",driverId);
-                    context.startActivity(intent);
-
-
-                    /*
-
-                    Intent intent=new Intent(context, CustomerMaps.class);
-                   */
-/* intent.putExtra("requestId",requestId);
-                    intent.putExtra("driverId",driverId);*//*
-
-                    context.startActivity(intent);
-*/
-
-
-                }
-            });
         }
 
 

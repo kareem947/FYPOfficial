@@ -20,17 +20,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Customer.ShowCustomerCompletedOrder"></activity>
+        <activity android:name=".Company.ShowCompanySuspendedDriversDetails"
+            android:label="DriverDetails"></activity>
+        <activity android:name=".Company.ShowCompanyAllCustomerDetails"
+            android:label="CustomerDetails"/>
+        <activity android:name=".Company.ShowCompanyAllDriversDetails"
+            android:label="DriverDetails"/>
+        <activity android:name=".Driver.ShowDriverCompletedOrder"
+            android:label="CompletedOrder"/>
+        <activity android:name=".Customer.ShowCustomerCompletedOrder"
+            android:label="CompletedOrder"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBvR07aFM-1ddGVgt392lRnUge3weT6nUY" />
-        <!--
- <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAGYXrHC3XCFNFngLPzPRIx4mBuEJdDF9Q" />
-        -->
-        <activity android:name=".Company.ShowDriverDetails" />
+
+        <activity android:name=".Company.ShowDriverDetails"
+            android:label="DriverDetails"/>
+        <activity android:name=".Company.ShowHistory"
+            android:label="History"/>
+        <activity android:name=".Company.ShowProgressingOrders"
+            android:label="ProgressingOrders"
+            android:parentActivityName=".Company.CompanyMainPage"/>
         <activity
             android:name=".Company.CompanyMainPage"
             android:label="@string/title_activity_company_main_page"
@@ -43,28 +54,32 @@
         <activity
             android:name=".Customer.CustomerHomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <!--         <activity android:name=".Driver.ShowDriverProfile" /> -->
-        <activity android:name=".Driver.Setting" />
-        <activity android:name=".Customer.ConfirmOrder"></activity>
-        <activity android:name=".Driver.ShowFullRequest" />
-        <activity android:name=".Customer.CustomerRegister" />
-        <activity android:name=".SignIn">
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity android:name=".Driver.ShowDriverProfile" /> -->
+        <activity android:name=".Driver.Setting"
+            android:label="EditProfile"/>
+        <activity android:name=".Customer.ConfirmOrder"
+            android:label="ConfirmOrder"/>
+        <activity android:name=".Driver.ShowFullRequest"
+            android:label="RequestDetails"/>
+        <activity android:name=".Customer.CustomerRegister"
+            android:label="Register"/>
+        <activity android:name=".SignIn"
+            android:label="SignIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Driver.DriverRegister" />
-        <!--         <activity android:name=".Driver.DriverRequests.DriverRequests" /> -->
+        <activity android:name=".Driver.DriverRegister"
+            android:label="Register"/> <!-- <activity android:name=".Driver.DriverRequests.DriverRequests" /> -->
         <activity
             android:name=".Customer.CustomerMaps"
-            android:label="@string/title_activity_customer_maps"></activity>
+            android:label="ProgressingOrder" />
         <activity android:name=".Customer.AddItem.AddItem" />
         <activity
             android:name=".Driver.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="ProgressingOrder" />
     </application>
 
 </manifest>

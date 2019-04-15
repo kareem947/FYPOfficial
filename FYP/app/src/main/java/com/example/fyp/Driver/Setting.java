@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fyp.R;
@@ -38,8 +39,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Setting extends AppCompatActivity {
 
-    private EditText nameText, phoneText, dlText, cnicText;
+    private EditText nameText, phoneText;
     CircleImageView imageView;
+    TextView  cnicText,dlText;
     private StorageReference mStorageReference;
     private RadioButton smallPickp, largeTruck, mediumTruck;
     Button saveProfile;
@@ -54,7 +56,6 @@ public class Setting extends AppCompatActivity {
         nameText = findViewById(R.id.dSettingName);
         phoneText = findViewById(R.id.dSettingPhone);
         dlText = findViewById(R.id.dSettingLicense);
-        cnicText = findViewById(R.id.dSettingCnic);
         imageView = findViewById(R.id.showprofile_image);
         saveProfile=findViewById(R.id.saveProfile);
 
@@ -115,20 +116,6 @@ public class Setting extends AppCompatActivity {
                 && data != null && data.getData() != null) {
 
             Uri imageUri = data.getData();
-            //Log.d("imageUri",imageUri.toString());
-       /*     CropImage.activity(imageUri)
-                    .setAspectRatio(1,1)
-                    .start(this);*/
-
-/*
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-*/
-/*
-            if (resultCode == RESULT_OK) {*/
-            /* Uri resultUri = result.getUri();*/
-
 
             final StorageReference imgPath = mStorageReference.child("profileimages").child("RINlsZbn5mPryTOMkp2Y9L1H1rH2" + ".jpg");
             imgPath.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {

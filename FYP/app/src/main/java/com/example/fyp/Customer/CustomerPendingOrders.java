@@ -54,17 +54,20 @@ public class CustomerPendingOrders extends Fragment {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                        String name = dataSnapshot1.child("customerName").getValue(String.class);
-                        String number = dataSnapshot1.child("customerNumber").getValue(String.class);
-                        String orderName= dataSnapshot1.child("orderId").getValue(String.class);
-                        String requestId=dataSnapshot1.getKey();
-                        list.add(new CustomerPendingOrderModel(name,number,orderName,uid,requestId));
+                list.clear();
+                if (isAdded()) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            String name = dataSnapshot1.child("customerName").getValue(String.class);
+                            String number = dataSnapshot1.child("customerNumber").getValue(String.class);
+                            String orderName = dataSnapshot1.child("orderId").getValue(String.class);
+                            String requestId = dataSnapshot1.getKey();
+                            list.add(new CustomerPendingOrderModel(name, number, orderName, uid, requestId));
 
+                        }
+                        CustomerPendingOrderAdapter adapter = new CustomerPendingOrderAdapter(getActivity(), list);
+                        recyclerView.setAdapter(adapter);
                     }
-                    CustomerPendingOrderAdapter adapter = new CustomerPendingOrderAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
                 }
             }
 

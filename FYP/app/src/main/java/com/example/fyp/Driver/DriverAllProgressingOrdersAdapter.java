@@ -41,7 +41,7 @@ public class DriverAllProgressingOrdersAdapter extends RecyclerView.Adapter<Driv
         return (new viewHolder(view));     }
 
     @Override
-    public void onBindViewHolder(@NonNull DriverAllProgressingOrdersAdapter.viewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final DriverAllProgressingOrdersAdapter.viewHolder viewHolder, int i) {
 
         viewHolder.name.setText(data.get(i).getDriverName());
         viewHolder.mobile.setText(data.get(i).getDriverMobile());
@@ -51,11 +51,22 @@ public class DriverAllProgressingOrdersAdapter extends RecyclerView.Adapter<Driv
         requestId= data.get(i).getRequestId();
         customerId=data.get(i).getCustomerId();
 
+
         String image=data.get(i).getImageView();
         if (!image.equals("default")) {
             Picasso.get().load(image).into(viewHolder.imageView);
         }
 
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos=viewHolder.getAdapterPosition();
+                Intent intent=new Intent(context, MapsActivity.class);
+                intent.putExtra("requestId",data.get(pos).getRequestId());
+                intent.putExtra("customerId",data.get(pos).getCustomerId());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -82,18 +93,8 @@ public class DriverAllProgressingOrdersAdapter extends RecyclerView.Adapter<Driv
             imageView=itemView.findViewById(R.id.customerpic);
             pickup=itemView.findViewById(R.id.pickup);
             dropoff=itemView.findViewById(R.id.dropoff);
+            itemView.setOnClickListener(this);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Goooood", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(context, MapsActivity.class);
-                    intent.putExtra("requestId",requestId);
-                    intent.putExtra("customerId",customerId);
-                    context.startActivity(intent);
-                }
-            });
         }
 
 

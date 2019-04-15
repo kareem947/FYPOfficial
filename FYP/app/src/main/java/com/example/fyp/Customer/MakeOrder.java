@@ -153,6 +153,13 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
                 startActivityForResult(mansoor, DROPOFF_PLACE_PICKER_REQUEST);
             }
         });
+
+
+
+
+
+
+
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -162,6 +169,9 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
                 recyclerView.setAdapter(myadapter);
             }
         }
+
+
+
 
 
 
@@ -230,12 +240,18 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
         });
 
 
+/*
         btnDatePicker = view.findViewById(R.id.date);
+*/
         btnTimePicker = view.findViewById(R.id.time);
+/*
         txtDate = view.findViewById(R.id.datetxt);
+*/
         txtTime = view.findViewById(R.id.timetext);
 
+/*
         btnDatePicker.setOnClickListener(this);
+*/
         btnTimePicker.setOnClickListener(this);
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +268,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
             @Override
             public void onClick(View v) {
 
-                if (v == btnDatePicker) {
+          /*      if (v == btnDatePicker) {
 
                     // Get Current Date
                     final Calendar c = Calendar.getInstance();
@@ -273,7 +289,7 @@ public class MakeOrder extends Fragment implements View.OnClickListener, Seriali
                                 }
                             }, yearr, month, day);
                     datePickerDialog.show();
-                }
+                }*/
                 if (v == btnTimePicker) {
 
                     // Get Current Time

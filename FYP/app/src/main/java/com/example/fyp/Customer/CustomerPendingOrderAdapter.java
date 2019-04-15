@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fyp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -67,7 +68,12 @@ public class CustomerPendingOrderAdapter extends RecyclerView.Adapter<CustomerPe
                 @Override
                 public void onClick(View v) {
                     DatabaseReference deleteRequest= FirebaseDatabase.getInstance().getReference().child("Requests").child(uid).child(requestsId);
-                    deleteRequest.removeValue();
+                    deleteRequest.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            notifyDataSetChanged();
+                        }
+                    });
                 }
             });
 

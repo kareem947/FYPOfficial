@@ -94,7 +94,7 @@
         />
 
 
-    <EditText
+    <TextView
         android:layout_width="340dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -114,7 +114,7 @@
         android:layout_marginLeft="30dp"
         />
 
-    <EditText
+    <TextView
         android:id="@+id/dSettingCnic"
         android:layout_width="340dp"
         android:layout_height="44dp"

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,13 +34,6 @@
             android:visibility="visible"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp" />
-        <!--      <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="edit profile pic"
-                  android:onClick="editProfilePic"
-                  android:layout_marginBottom="30dp"
-                  android:layout_gravity="bottom"/>-->
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -165,15 +164,13 @@
 
     <Button
         android:id="@+id/editProfile"
-
         android:layout_width="340dp"
         android:layout_height="49dp"
         android:layout_marginLeft="30dp"
-
         android:background="@color/buttonColor"
         android:text="Edit/Change"
         android:textColor="@color/textColor" />
 
-
 </LinearLayout>
 
+</ScrollView>

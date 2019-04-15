@@ -56,29 +56,34 @@ public class CompanyDriverRequests extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot dd:dataSnapshot.getChildren()){
-                        Log.d("xyz",dd.child("name").getValue(String.class));
-                        String name=dd.child("name").getValue(String.class);
-                        String mobile=dd.child("mobile").getValue(String.class);
-                        list.add(new RequestModel(name,mobile));
+                list.clear();
+            if (isAdded()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dd : dataSnapshot.getChildren()) {
+                        String id = dd.getKey();
+                        Log.d("xyz", dd.child("name").getValue(String.class));
+                        String name = dd.child("name").getValue(String.class);
+                        String mobile = dd.child("mobile").getValue(String.class);
+                        list.add(new RequestModel(name, mobile,id));
 
                     }
                 }
-
-                for (int i=0; i<list.size(); i++){
-                    Log.d("xyzz",list.get(i).getMobile());
+                for (int i = 0; i < list.size(); i++) {
+                    Log.d("xyzz", list.get(i).getMobile());
                 }
-                RequestsAdapter requestsAdapter=new RequestsAdapter(getContext(),list);
+                RequestsAdapter requestsAdapter = new RequestsAdapter(getContext(), list);
                 recyclerView.setAdapter(requestsAdapter);
 
             }
 
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
+
     }
 
 }

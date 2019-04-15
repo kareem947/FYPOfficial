@@ -56,6 +56,7 @@ public class customerAcceptedOrders extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isAdded()){
+                    list.clear();
                 if (dataSnapshot.exists()) {
                     for (final DataSnapshot data : dataSnapshot.getChildren()) {
                         final String requestId = data.getKey();
@@ -64,20 +65,22 @@ public class customerAcceptedOrders extends Fragment {
                         gotoToWorkingRequests.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot datasnap) {
-                                if (datasnap.exists()) {
+                                list.clear();
+                                if (isAdded()) {
+                                    if (datasnap.exists()) {
 
-                                    String dname = datasnap.child("driverName").getValue(String.class);
-                                    String dImage = datasnap.child("driverImage").getValue(String.class);
-                                    String dMobile = datasnap.child("driverMobile").getValue(String.class);
-                                    String driverId = datasnap.child("driverId").getValue(String.class);
-                                    String orderName = datasnap.child("orderId").getValue(String.class);
-                                    Log.d("MyCheck", requestId + "     " + driverId);
-                                    list.add(new CustomerAcceptedOrderModel(dname, dImage, dMobile, requestId, driverId, orderName));
-                                    CustomerAcceptedOrderAdapter adapter = new CustomerAcceptedOrderAdapter(getActivity(), list);
-                                    recyclerView.setAdapter(adapter);
-                                }
-                                else{
-                                    databaseReference.child(data.getKey()).removeValue();
+                                        String dname = datasnap.child("driverName").getValue(String.class);
+                                        String dImage = datasnap.child("driverImage").getValue(String.class);
+                                        String dMobile = datasnap.child("driverMobile").getValue(String.class);
+                                        String driverId = datasnap.child("driverId").getValue(String.class);
+                                        String orderName = datasnap.child("orderId").getValue(String.class);
+                                        Log.d("MyCheck", requestId + "     " + driverId);
+                                        list.add(new CustomerAcceptedOrderModel(dname, dImage, dMobile, requestId, driverId, orderName));
+                                        CustomerAcceptedOrderAdapter adapter = new CustomerAcceptedOrderAdapter(getActivity(), list);
+                                        recyclerView.setAdapter(adapter);
+                                    } else {
+                                        databaseReference.child(data.getKey()).removeValue();
+                                    }
                                 }
                             }
                             @Override

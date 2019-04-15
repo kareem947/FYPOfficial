@@ -8,30 +8,44 @@
             android:id="@+id/companyDriverRequests"
             android:icon="@drawable/add_driver"
             android:title="DriverRequests" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
 
-    <item android:title="Communicate">
+    </group>
+    <item android:title="Orders_Details">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/progressingOrders"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="ProgressingOrders" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/history"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="History" />
+        </menu>
+    </item>
+
+    <item android:title="Users_Details">
+        <menu>
+            <item
+                android:id="@+id/registeredDrivers"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="RegisteredDrivers" />
+            <item
+                android:id="@+id/registeredCustomers"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="RegisteredCustomers" />
+            <item
+                android:id="@+id/suspendedDrivers"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="SuspendedDrivers" />
+        </menu>
+    </item>
+    <item android:title="Setting">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Settings" />
+
         </menu>
     </item>
 

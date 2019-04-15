@@ -68,76 +68,79 @@ public class DriverRequests extends Fragment {
 
         final DatabaseReference gotoCustomerIds=FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid).child("customerIds");
         gotoCustomerIds.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
-                list=new ArrayList<>();
+                if (dataSnapshot.exists()){
+                list = new ArrayList<>();
                 listt = new ArrayList<>();
-                for(final DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
 
+                    Log.d("ooperwala1", dataSnapshot1.getKey());
 
-                    Log.d("ooperwala1",dataSnapshot1.getKey());
-
-                    DatabaseReference gotoRequests=FirebaseDatabase.getInstance().getReference().child("Requests").child(dataSnapshot1.child("requestId").getValue().toString()).child(dataSnapshot1.getKey());
+                    DatabaseReference gotoRequests = FirebaseDatabase.getInstance().getReference().child("Requests").child(dataSnapshot1.child("requestId").getValue().toString()).child(dataSnapshot1.getKey());
                     gotoRequests.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot data) {
-                            if (isAdded()){
-                            // DataSnapshot dataSnapshot2=dataSnapshot;
-                            if (data.exists()) {
+                            if (isAdded()) {
+                                // DataSnapshot dataSnapshot2=dataSnapshot;
+                                if (data.exists()) {
                                 /*
                                 list.add(dataSnapshot1.getKey());
                                 Log.d("ooperwala",data.getKey());*/
 
 
-                                final String name = data.child("customerName").getValue().toString();
-                                Log.d("ooperwala1", data.child("customerName").getValue().toString() + "Kareeeeeem");
+                                    final String name = data.child("customerName").getValue().toString();
+                                    Log.d("ooperwala1", data.child("customerName").getValue().toString() + "Kareeeeeem");
 
-                                final String pick = data.child("pickup").getValue().toString();
-                                final String drop = data.child("delivery").getValue().toString();
-                                String paymentMethod = data.child("paymentMethod").getValue().toString();
-                                if (paymentMethod.equals("10")) {
-                                    paymentMethod = "Cash Payment";
-                                } else {
-                                    paymentMethod = "Online Payment";
-                                }
-                                final String requestId = dataSnapshot1.getKey();
-                                final String id = dataSnapshot1.child("requestId").getValue().toString();
-                                Log.d("Recycler", name);
+                                    final String pick = data.child("pickup").getValue().toString();
+                                    final String drop = data.child("delivery").getValue().toString();
+                                    String paymentMethod = data.child("paymentMethod").getValue().toString();
+                                    if (paymentMethod.equals("10")) {
+                                        paymentMethod = "Cash Payment";
+                                    } else {
+                                        paymentMethod = "Online Payment";
+                                    }
+                                    final String requestId = dataSnapshot1.getKey();
+                                    final String id = dataSnapshot1.child("requestId").getValue().toString();
+                                    Log.d("Recycler", name);
 
-                                DatabaseReference xyz = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(id);
-                                final String finalPaymentMethod = paymentMethod;
-                                xyz.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        image = dataSnapshot.child("image").getValue(String.class);
-                                        if (image.equals("") || name.equals("") || pick.equals("") || drop.equals("") || requestId.equals("") || finalPaymentMethod.equals("")) {
-                                            return;
-                                        } else {
-                                            listt.add(new Requestmodel(name, pick, drop, id, requestId, image, finalPaymentMethod));
-                                            requestadapter myadapter = new requestadapter(getActivity(), listt);
-                                            recyclerView.setAdapter(myadapter);
-                                            recyclerView.setHasFixedSize(true);
+                                    DatabaseReference xyz = FirebaseDatabase.getInstance().getReference().child("Users").child("Customers").child(id);
+                                    final String finalPaymentMethod = paymentMethod;
+                                    xyz.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (isAdded()){
+                                                if (dataSnapshot.exists()) {
+                                                    image = dataSnapshot.child("image").getValue(String.class);
+                                                    if (image.equals("") || name.equals("") || pick.equals("") || drop.equals("") || requestId.equals("") || finalPaymentMethod.equals("")) {
+                                                        return;
+                                                    } else {
+                                                        listt.add(new Requestmodel(name, pick, drop, id, requestId, image, finalPaymentMethod));
+                                                        requestadapter myadapter = new requestadapter(getActivity(), listt);
+                                                        recyclerView.setAdapter(myadapter);
+                                                        recyclerView.setHasFixedSize(true);
+                                                    }
+                                                }
                                         }
                                     }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
-                                Log.d("EveryThing", name + pick + drop + paymentMethod + image);
+                                        }
+                                    });
+                                    Log.d("EveryThing", name + pick + drop + paymentMethod + image);
 
 /*
                                 listt.add(new Requestmodel(name, pick, drop, id, image, paymentMethod));*/
 
-                            } else {
-                                gotoCustomerIds.child(dataSnapshot1.getKey()).removeValue();
+                                } else {
+                                    gotoCustomerIds.child(dataSnapshot1.getKey()).removeValue();
+                                }
                             }
                         }
-                        }
-
 
 
                         @Override
@@ -150,6 +153,7 @@ public class DriverRequests extends Fragment {
 
                 }
             }
+        }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }

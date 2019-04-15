@@ -45,14 +45,18 @@ public class ShowDriverDetails extends AppCompatActivity {
     String id="",email,password, uid;
     FirebaseAuth mAuth;
     private FirebaseUser mcurrentuser;
-
-
+    DatabaseReference topath;
+    DatabaseReference frompath;
+    String pushId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_driver_details);
+
+        pushId=getIntent().getStringExtra("pushId");
+        Log.d("xyzzz",pushId);
 
         nameText = findViewById(R.id.dSettingName);
         phoneText = findViewById(R.id.dSettingPhone);
@@ -79,21 +83,21 @@ public class ShowDriverDetails extends AppCompatActivity {
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference frompath = FirebaseDatabase.getInstance().getReference().child("DriversRequests").child(id);
+                DatabaseReference frompath = FirebaseDatabase.getInstance().getReference().child("DriversRequests").child(pushId);
                 frompath.removeValue();
 
+                Intent intent = new Intent(ShowDriverDetails.this, CompanyMainPage.class);
+                intent.putExtra("uniqueid","FromDrivers");
+                startActivity(intent);
             }
         });
 
 
-        //final String id = getIntent().getStringExtra("user_id");
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("DriversRequests");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("DriversRequests").child(pushId);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot dd:dataSnapshot.getChildren()){
-                        id=dd.getKey();
+            public void onDataChange(DataSnapshot dd) {
+                if (dd.exists()) {
                         email=dd.child("email").getValue(String.class);
                         password=dd.child("password").getValue(String.class);
 
@@ -111,14 +115,15 @@ public class ShowDriverDetails extends AppCompatActivity {
                     if (type.equals("3")) {
                         largeTruck.setChecked(true);
                     }
+
                     String image = dd.child("image").getValue(String.class);
 
+                    Log.d("xyz",type+"        "+ image);
                     //String s = dataSnapshot.child("image").getValue(String.class);
                     if (!image.equals("default")) {
                         Picasso.get().load(image).into(imageView);
                     }
                 }
-            }
 
             }
 
@@ -144,10 +149,10 @@ public class ShowDriverDetails extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             mcurrentuser = FirebaseAuth.getInstance().getCurrentUser();
                             uid = mcurrentuser.getUid();
+                            topath= FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child(uid);
 
                             setDriverData();
-                            Intent intent =new Intent(ShowDriverDetails.this, CompanyDriverRequests.class);
-                            startActivity(intent);
+
 
 
                         } else {
@@ -158,19 +163,32 @@ public class ShowDriverDetails extends AppCompatActivity {
                         // ...
                     }
                 });
+
+
     }
 
 
 
-    DatabaseReference topath = FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers");
-    DatabaseReference frompath = FirebaseDatabase.getInstance().getReference().child("DriversRequests");
+
     public void setDriverData(){
+        frompath= FirebaseDatabase.getInstance().getReference().child("DriversRequests").child(pushId);
+
         frompath.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 if (dataSnapshot.exists()){
-                    topath.child(uid).setValue(dataSnapshot.child(id).getValue());
+                    topath.setValue(dataSnapshot.getValue());
+                    topath.child("rating").setValue(0);
+                    topath.child("fair").setValue(0);
+                    topath.child("suspended").setValue("no");
+                    topath.child("completedOrders").setValue(0);
+
                     frompath.child(id).removeValue();
+                    Intent intent = new Intent(ShowDriverDetails.this, CompanyMainPage.class);
+                    intent.putExtra("uniqueid","FromDrivers");
+                    startActivity(intent);
+
 
                 }
             }
